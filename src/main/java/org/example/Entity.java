@@ -11,11 +11,11 @@ public class Entity {
         this.email = email;
     }
 
-    String getCurrentAddress() {
+    String getAddress() {
         return address;
     }
 
-    String getCurrentZipCode() {
+    String getZipCode() {
         return zipCode;
     }
 

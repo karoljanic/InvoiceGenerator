@@ -5,14 +5,14 @@ import java.util.Calendar;
 
 public class Invoice {
     private final Company company;
-    private final EntityI customer;
+    private final Person customer;
     private final ArrayList<InvoicePart> productsList;
     private final int invoiceNumber;
     private static int invoicesCounter = 0;
     private final String invoiceSeries;
     private static final float vatPercentage = 0.23F;
 
-    Invoice(Company company, EntityI customer, String invoiceSeries) {
+    Invoice(Company company, Person customer, String invoiceSeries) {
         this.company = company;
         this.customer = customer;
         this.invoiceSeries = invoiceSeries;
@@ -59,7 +59,7 @@ public class Invoice {
             pdfCreator.addRow(new String[]{company.getAddress(), customer.getAddress()}, new boolean[]{false, false}, true);
             pdfCreator.addRow(new String[]{company.getZipCode(), customer.getZipCode()}, new boolean[]{false, false}, true);
             pdfCreator.addRow(new String[]{company.getIdentifier(), customer.getIdentifier()}, new boolean[]{false, false}, true);
-            pdfCreator.addRow(new String[]{company.getContact(), customer.getContact()}, new boolean[]{false, false}, true);
+            pdfCreator.addRow(new String[]{company.getEmail(), customer.getEmail()}, new boolean[]{false, false}, true);
             pdfCreator.addEmptyLines(2);
             pdfCreator.addRow(new String[]{"No.", "Product Name", "Product Price", "Amount", "Net", "VAT(23%)", "Gross"}, new boolean[]{true, true, true, true, true, true, true}, false);
 
