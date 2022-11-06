@@ -1,29 +1,53 @@
 package org.example;
 
 import javafx.application.Application;
+import javafx.application.HostServices;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 
 public class App extends Application {
-    private class CustomInput extends HBox {
-        private Label label;
-        private TextField textField;
+
+    private static class CustomVBox extends VBox {
+        CustomVBox(Node... children) {
+            super(10, children);
+            setAlignment(Pos.TOP_CENTER);
+            setPadding(new Insets(10, 10, 10, 10));
+        }
+
+        CustomVBox(double spacing) {
+            super(spacing);
+            setAlignment(Pos.TOP_CENTER);
+            setPadding(new Insets(10, 10, 10, 10));
+        }
+    }
+
+    private static class CustomHBox extends HBox {
+        CustomHBox(Node... children) {
+            super(10, children);
+            setAlignment(Pos.TOP_CENTER);
+            setPadding(new Insets(10, 10, 10, 10));
+        }
+    }
+
+    private static class CustomInput extends HBox {
+        final private TextField textField;
 
         CustomInput(String text) {
             super(10);
 
             setAlignment(Pos.TOP_CENTER);
 
-            label = new Label(text);
+            Label label = new Label(text);
             label.setFont(Font.font ("Verdana", 14));
 
             textField = new TextField();
@@ -52,9 +76,9 @@ public class App extends Application {
         var companyAddressInput = new CustomInput("Company Address");
         var companyZipCodeInput = new CustomInput("Company Zip Code");
         var companyEmailInput = new CustomInput("Company Email");
-        var inputs1 = new VBox(companyNameInput, companyNipInput, companyAddressInput, companyZipCodeInput, companyEmailInput);
+        var inputs1 = new CustomVBox(companyNameInput, companyNipInput, companyAddressInput, companyZipCodeInput, companyEmailInput);
         var runInvoicesGeneratorButton = new Button("Open Invoices Generator");
-        var loginScene = new Scene(new VBox(inputs1, runInvoicesGeneratorButton));
+        var loginScene = new Scene(new CustomVBox(inputs1, runInvoicesGeneratorButton));
 
         var customerForenameInput = new CustomInput("Customer Forename");
         var customerSurnameInput = new CustomInput("Customer Surname");
@@ -63,26 +87,28 @@ public class App extends Application {
         var customerZipCodeInput = new CustomInput("Customer Zip Code");
         var customerEmailInput = new CustomInput("Customer Email");
         var invoiceSeriesInput = new CustomInput("Invoice Series");
-        var inputs2 = new VBox(customerForenameInput, customerSurnameInput, customerIdInput, customerAddressInput, customerZipCodeInput, customerEmailInput, invoiceSeriesInput);
+        var inputs2 = new CustomVBox(customerForenameInput, customerSurnameInput, customerIdInput, customerAddressInput, customerZipCodeInput, customerEmailInput, invoiceSeriesInput);
         var issueInvoicesButton = new Button("Issue Invoices");
-        var invoicesGeneratorScene = new Scene(new VBox(inputs2, issueInvoicesButton));
+        var invoicesGeneratorScene = new Scene(new CustomVBox(inputs2, issueInvoicesButton));
 
         var productNameInput = new CustomInput("Product Name");
         var productPriceInput = new CustomInput("Product Price");
         var productAmountInput = new CustomInput("Product Amount");
-        var inputs3 = new VBox(productNameInput, productPriceInput, productAmountInput);
+        var inputs3 = new CustomVBox(productNameInput, productPriceInput, productAmountInput);
         var addProductButton = new Button("Add Product");
         var generateInvoiceButton = new Button("Generate Invoice");
+        var newInvoiceButton = new Button("Create New Invoice");
         var productsListTitle = new Label("Products Already Added");
-        var productsList = new VBox(10);
-        var invoicesDashboardScene = new Scene(new HBox(new VBox(inputs3, addProductButton, generateInvoiceButton),
-                new VBox(productsListTitle, productsList)));
+        var productsList = new CustomVBox(10);
+        var invoicesDashboardScene = new Scene(new CustomHBox(new CustomVBox(inputs3, addProductButton, generateInvoiceButton, newInvoiceButton),
+                new CustomVBox(productsListTitle, new ScrollPane(productsList))));
 
         runInvoicesGeneratorButton.setOnMouseClicked(event -> {
             if(allInputsAreNotBlank(inputs1)) {
                 stage.close();
                 stage.setScene(invoicesGeneratorScene);
                 stage.show();
+                stage.sizeToScene();
             }
         });
 
@@ -94,18 +120,32 @@ public class App extends Application {
                 stage.close();
                 stage.setScene(invoicesDashboardScene);
                 stage.show();
+                stage.sizeToScene();
             }
         });
 
         addProductButton.setOnMouseClicked(event -> {
             if(allInputsAreNotBlank(inputs3)) {
-                productsList.getChildren().add(new Label(productNameInput.getText() + " - " + productAmountInput.getText() + " - " + productPriceInput.getText()));
                 invoice.addProducts(productNameInput.getText(), Float.parseFloat(productPriceInput.getText()), Integer.parseInt(productAmountInput.getText()));
+                productsList.getChildren().add(new Label(productNameInput.getText() + " - " + productAmountInput.getText() + " - " + productPriceInput.getText()));
+                stage.sizeToScene();
             }
         });
 
         generateInvoiceButton.setOnMouseClicked(event -> {
-            invoice.generatePdf();
+            String pathToResultFile = invoice.generatePdf();
+
+            File file = new File(pathToResultFile);
+            HostServices hostServices = getHostServices();
+            hostServices.showDocument(file.getAbsolutePath());
+        });
+
+        newInvoiceButton.setOnMouseClicked(event -> {
+            invoice = new Invoice(new Company(companyNameInput.getText(), companyNipInput.getText(), companyAddressInput.getText(), companyZipCodeInput.getText(), companyEmailInput.getText()),
+                    new Person(customerForenameInput.getText(), customerSurnameInput.getText(), customerIdInput.getText(), customerAddressInput.getText(), customerZipCodeInput.getText(), customerEmailInput.getText()),
+                    invoiceSeriesInput.getText());
+            productsList.getChildren().clear();
+            stage.sizeToScene();
         });
 
         stage.setScene(loginScene);
@@ -113,7 +153,7 @@ public class App extends Application {
     }
     public static void main(String[] args) { launch(); }
 
-    boolean allInputsAreNotBlank(VBox inputs) {
+    boolean allInputsAreNotBlank(CustomVBox inputs) {
         for(Object input: inputs.getChildren()) {
             if(((CustomInput)input).isBlank()) {
                 return false;

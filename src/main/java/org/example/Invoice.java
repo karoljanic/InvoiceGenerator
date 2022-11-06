@@ -44,7 +44,7 @@ public class Invoice {
         return Integer.toString(day) + '.' + month + '.' + year;
      }
 
-    void generatePdf() {
+    String generatePdf() {
         final String invoiceName = "Invoice " + invoiceSeries + invoiceNumber;
 
         try {
@@ -75,6 +75,8 @@ public class Invoice {
             pdfCreator.saveAndClose();
         }
         catch (Exception ignored) { }
+
+        return invoiceName + ".pdf";
     }
 
     private float round2decimal(float value) {

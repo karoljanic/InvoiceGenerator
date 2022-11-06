@@ -9,18 +9,16 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 
 public class PdfCreator {
     final private Document document;
-    final private OutputStream outputStream;
+    final private PdfWriter writer;
     private static final Font boldFont = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD);
     private static final Font normalFont = new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL);
 
     PdfCreator(String fileName) throws Exception {
         document = new Document(PageSize.A4);
-        outputStream = new FileOutputStream(fileName + ".pdf");
-        PdfWriter.getInstance(document, outputStream);
+        writer = PdfWriter.getInstance(document, new FileOutputStream(fileName + ".pdf"));
         document.open();
     }
 
@@ -53,7 +51,6 @@ public class PdfCreator {
 
     void saveAndClose() throws Exception {
         document.close();
-        outputStream.close();
+        writer.close();
     }
-
 }
