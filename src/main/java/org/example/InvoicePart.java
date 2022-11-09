@@ -13,11 +13,11 @@ public class InvoicePart {
 
     int getAmount() { return amount; }
 
-    float getProductPrice() {
+    double getProductPrice() {
         return product.getPrice();
     }
 
-    float getCost() {
+    double getCost() {
         return amount * product.getPrice();
     }
 }

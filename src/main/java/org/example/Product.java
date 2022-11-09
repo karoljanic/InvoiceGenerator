@@ -2,14 +2,14 @@ package org.example;
 
 public class Product {
     private final String name;
-    private final float price;
+    private final double price;
 
-    Product(String name, float price) {
+    Product(String name, double price) {
         this.name = name;
         this.price = price;
     }
 
-    float getPrice() {
+    double getPrice() {
         return price;
     }
 
