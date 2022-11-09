@@ -4,7 +4,7 @@ public class InvoicePart {
     private final Product product;
     private final int amount;
 
-    InvoicePart(String productName, float productPrice, int productAmount) {
+    InvoicePart(String productName, double productPrice, int productAmount) {
         product = new Product(productName, productPrice);
         amount = productAmount;
     }

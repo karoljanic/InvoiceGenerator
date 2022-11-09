@@ -7,9 +7,15 @@ public class DatabaseSaver {
         this.database = database;
     }
 
-    void save(Invoice invoice) {
-        database.addCompany(invoice.getCompanyNIP(), invoice.getCompanyName(), invoice.getCompanyAddress(), invoice.getCompanyZipCode(), invoice.getCompanyEmail());
-        database.addCustomer(invoice.getCustomerID(), invoice.getCustomerFirstName(), invoice.getCustomerSecondName(), invoice.getCustomerAddress(), invoice.getCustomerZipCode(), invoice.getCustomerID());
-        database.addInvoice(invoice.getIdentifier(), invoice.getCompanyNIP(), invoice.getCustomerID(), invoice.getCost());
+    boolean save(Invoice invoice) {
+        if(!database.addCompany(invoice.getCompanyNIP(), invoice.getCompanyName(), invoice.getCompanyAddress(), invoice.getCompanyZipCode(), invoice.getCompanyEmail())) {
+            return false;
+        }
+
+        if(!database.addCustomer(invoice.getCustomerID(), invoice.getCustomerFirstName(), invoice.getCustomerSecondName(), invoice.getCustomerAddress(), invoice.getCustomerZipCode(), invoice.getCustomerID())) {
+            return false;
+        }
+
+        return database.addInvoice(invoice.getIdentifier(), invoice.getCompanyNIP(), invoice.getCustomerID(), invoice.getCost());
     }
 }

@@ -10,7 +10,7 @@ public class Invoice {
     private final int invoiceNumber;
     private static int invoicesCounter = 0;
     private static final String INVOICE_SERIES = "ZH-KP-";
-    private static final double VAT_PERCENTAGE = 0.23F;
+    private static final double VAT_PERCENTAGE = 0.23;
 
     Invoice(Company company, Customer customer) {
         this.company = company;
@@ -21,7 +21,7 @@ public class Invoice {
         Invoice.invoicesCounter++;
     }
 
-    void addProducts(String productName, float productPrice, int productAmount) {
+    void addProducts(String productName, double productPrice, int productAmount) {
         productsList.add(new InvoicePart(productName, productPrice, productAmount));
     }
 
@@ -39,8 +39,8 @@ public class Invoice {
     String getCompanyZipCode() { return company.getZipCode(); }
     String getCompanyEmail() { return company.getEmail(); }
     String getCompanyNIP() { return company.getIdentifier(); }
-    String getCustomerName() { return customer.getName(); }
 
+    String getCustomerName() { return customer.getName(); }
     String getCustomerFirstName() { return  customer.getFirstName(); }
     String getCustomerSecondName() { return  customer.getSecondName(); }
     String getCustomerAddress() { return customer.getAddress(); }
@@ -48,13 +48,16 @@ public class Invoice {
     String getCustomerEmail() { return customer.getEmail(); }
     String getCustomerID() { return customer.getIdentifier(); }
 
+    String getIdentifier() { return Invoice.INVOICE_SERIES + invoiceNumber; }
+    double getVatPercentage() { return Invoice.VAT_PERCENTAGE; }
+
     ArrayList<HashMap<String, String>> getProducts() {
         ArrayList<HashMap<String, String>> result = new ArrayList<>();
 
         for(InvoicePart product: productsList) {
             HashMap<String, String> productMap = new HashMap<>();
             productMap.put("name", product.getName());
-            productMap.put("price", String.format("%.2f", product.getCost()));
+            productMap.put("price", String.format("%.2f", product.getProductPrice()));
             productMap.put("amount", Integer.toString(product.getAmount()));
             productMap.put("net", String.format("%.2f", (1.0 - VAT_PERCENTAGE) * product.getAmount() * product.getProductPrice()));
             productMap.put("vat", String.format("%.2f", VAT_PERCENTAGE * product.getAmount() * product.getProductPrice()));
@@ -64,10 +67,6 @@ public class Invoice {
 
         return result;
     }
-
-
-    String getIdentifier() { return Invoice.INVOICE_SERIES + invoiceNumber; }
-    double getVatPercentage() { return Invoice.VAT_PERCENTAGE; }
 
     private static double round2decimal(double value) {
         return Math.round(value * 100.0) / 100.0;
