@@ -24,7 +24,7 @@ public class InvoiceCreator {
         pdfCreator.addTextLine(new String[]{invoice.getCompanyNIP(), invoice.getCustomerID()}, new boolean[]{false, false}, true);
         pdfCreator.addTextLine(new String[]{invoice.getCompanyEmail(), invoice.getCustomerEmail()}, new boolean[]{false, false}, true);
         pdfCreator.addEmptyLines(2);
-        pdfCreator.addTextLine(new String[]{"No.", "Product Name", "Product Price", "Amount", "Net", "VAT(" + invoice.getVatPercentage() * 100.0+ "%)", "Gross"}, new boolean[]{true, true, true, true, true, true, true}, false);
+        pdfCreator.addTextLine(new String[]{"No.", "Product Name", "Product Price", "Amount", "Net", "VAT(" + String.format("%.2f", invoice.getVatPercentage() * 100.0) + "%)", "Gross"}, new boolean[]{true, true, true, true, true, true, true}, false);
 
         int iter = 1;
         for(HashMap<String, String> part: invoice.getProducts()) {

@@ -56,9 +56,9 @@ public class Invoice {
             productMap.put("name", product.getName());
             productMap.put("price", String.format("%.2f", product.getCost()));
             productMap.put("amount", Integer.toString(product.getAmount()));
-            productMap.put("net", String.format("%.2f", product.getAmount() * product.getProductPrice()));
+            productMap.put("net", String.format("%.2f", (1.0 - VAT_PERCENTAGE) * product.getAmount() * product.getProductPrice()));
             productMap.put("vat", String.format("%.2f", VAT_PERCENTAGE * product.getAmount() * product.getProductPrice()));
-            productMap.put("gross", String.format("%.2f", (1 + VAT_PERCENTAGE) * product.getAmount() * product.getProductPrice()));
+            productMap.put("gross", String.format("%.2f", product.getAmount() * product.getProductPrice()));
             result.add(productMap);
         }
 

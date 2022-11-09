@@ -119,7 +119,7 @@ public class App extends Application {
         var productsList = new CustomVBox(10);
 
         var productNameInput = new CustomInput("Product Name");
-        var productPriceInput = new CustomInput("Product Price");
+        var productPriceInput = new CustomInput("Product Price(Gross)");
         var productAmountInput = new CustomInput("Product Amount");
         var inputs = new CustomVBox(productNameInput, productPriceInput, productAmountInput);
         var addProductButton = new Button("Add Product");
