@@ -3,6 +3,7 @@ package org.example;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+// Cel klasy: reprezentowanie danych faktury
 public class Invoice {
     private final Company company;
     private final Customer customer;

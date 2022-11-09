@@ -11,6 +11,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 
+// Cel klasy: przejscie pomiedzy biblioteka tworzaca PDFy a interfejsem kreator PDFow
 public class PdfCreatorAdapter implements IPdfCreator {
     private Document document;
     private PdfWriter writer;
@@ -26,6 +27,7 @@ public class PdfCreatorAdapter implements IPdfCreator {
         catch (Exception ignored) { }
     }
 
+    @Override
     public void addEmptyLines(int number) {
         try {
             PdfPTable table = new PdfPTable(1);
@@ -41,6 +43,7 @@ public class PdfCreatorAdapter implements IPdfCreator {
         catch (Exception ignored) { }
     }
 
+    @Override
     public void addTextLine(String[] texts, boolean[] bolds, boolean disableBorder) {
         try {
             int n = texts.length;
@@ -57,6 +60,7 @@ public class PdfCreatorAdapter implements IPdfCreator {
         catch (Exception ignored) { }
     }
 
+    @Override
     public String save(String fileName) {
         document.close();
         writer.close();

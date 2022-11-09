@@ -3,6 +3,7 @@ package org.example;
 import java.util.Calendar;
 import java.util.HashMap;
 
+// Cel klasy: generowanie faktur
 public class InvoiceCreator {
     final private IPdfCreator pdfCreator;
     private Invoice invoice;
@@ -41,10 +42,10 @@ public class InvoiceCreator {
     }
 
     private static String getCurrentDate() {
-        Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH) + 1;
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH) + 1;
+        int day = cal.get(Calendar.DAY_OF_MONTH);
 
         return Integer.toString(day) + '.' + month + '.' + year;
     }

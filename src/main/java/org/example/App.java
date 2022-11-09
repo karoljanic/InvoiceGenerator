@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 
-
+// Cel klasy: komunikacja z uzytkownikiem
 public class App extends Application {
 
     private static class CustomVBox extends VBox {

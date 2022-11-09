@@ -1,5 +1,6 @@
 package org.example;
 
+// Cel klasy: Zapisywanie danych do bazy danych
 public class DatabaseSaver {
     IDatabase database;
 

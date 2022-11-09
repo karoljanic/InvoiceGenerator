@@ -1,5 +1,6 @@
 package org.example;
 
+// Cel klasy: reprezentowanie danych firmy
 public class Company extends Entity {
     private final String name;
     private final String nip;

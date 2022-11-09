@@ -1,5 +1,6 @@
 package org.example;
 
+// Cel klasy: reprezentowanie danych o produkcie
 public class Product {
     private final String name;
     private final double price;

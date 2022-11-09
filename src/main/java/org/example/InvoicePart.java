@@ -1,5 +1,6 @@
 package org.example;
 
+// Cel klasy: reprezentwowanie czesci faktury
 public class InvoicePart {
     private final Product product;
     private final int amount;

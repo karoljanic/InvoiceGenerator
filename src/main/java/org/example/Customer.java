@@ -1,5 +1,6 @@
 package org.example;
 
+// Cel klasy: reprezentowanie danych klienta
 public class Customer extends Entity {
     private final String firstName;
     private final String secondName;

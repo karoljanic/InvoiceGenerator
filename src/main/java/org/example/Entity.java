@@ -1,5 +1,6 @@
 package org.example;
 
+// Cel klasy: reprezentowanie wspolnych danych firmy i klienta = klasa bazowa
 public class Entity {
     private final String address;
     private final String zipCode;
