@@ -1,26 +1,26 @@
-package org.example;
+package org.karoljanic.models;
 
-// Cel klasy: reprezentowanie wspolnych danych firmy i klienta = klasa bazowa
+// Cel klasy: reprezentowanie wspolnych danych firmy i klienta = reprezentoeanie adresu = klasa bazowa
 public class Entity {
     private final String address;
     private final String zipCode;
     private final String email;
 
-    Entity(String address, String zipCode, String email) {
+    public Entity(String address, String zipCode, String email) {
         this.address = address;
         this.zipCode = zipCode;
         this.email = email;
     }
 
-    String getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    String getZipCode() {
+    public String getZipCode() {
         return zipCode;
     }
 
-    String getEmail() {
+    public String getEmail() {
         return email;
     }
 }

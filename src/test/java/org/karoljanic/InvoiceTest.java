@@ -1,14 +1,19 @@
-package org.example;
+package org.karoljanic;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.karoljanic.models.*;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class InvoiceTest {
     private Company company;
     private Customer customer;
+    private ArrayList<InvoicePart> invoiceParts;
     private Invoice invoice;
 
     private final static String comName = "COMPANY-NAME";
@@ -23,24 +28,27 @@ public class InvoiceTest {
     private final static String cusAddress = "Street 2";
     private final static String cusZipCode = "56-789";
     private final static String cusEmail = "customer@email.com";
-    private final static String identifier = "ZH-KP-4";
-    private final static double vat = 0.23;
+    private final static String identifier = "ZH-KP-0";
+    private final static float vat = 0.23F;
 
-    private static String[] productNames = new String[]{"Product 1 Name", "Product 2 Name", "Product 3 Name"};
-    private static double[] productPrices = new double[]{9.99, 19.49, 39.79};
-    private static int[] productAmounts = new int[]{7, 3, 1};
+    private static final String[] productNames = new String[]{"Product 1 Name", "Product 2 Name", "Product 3 Name"};
+    private static final float[] productPrices = new float[]{9.99F, 19.49F, 39.79F};
+    private static final int[] productAmounts = new int[]{7, 3, 1};
 
-    private static double cost = 168.19;
+    private static final float cost = 168.19F;
+
+    private final DecimalFormat plnFormat = new DecimalFormat("#.00 PLN");
 
     @Before
     public void initializeInvoice() {
         company = new Company(comName, comNip, comAddress, comZipCode, comEmail);
         customer = new Customer(cusForeName, cusSurname, cusId, cusAddress, cusZipCode, cusEmail);
-        invoice = new Invoice(company, customer);
-
+        invoiceParts = new ArrayList<>();
         for(int i = 0; i < 3; i++) {
-            invoice.addProducts(productNames[i], productPrices[i], productAmounts[i]);
+            invoiceParts.add(new InvoicePart(new Product(productNames[i], productPrices[i]), productAmounts[i]));
         }
+
+        invoice = new Invoice(company, customer, invoiceParts);
     }
 
     @Test
@@ -58,7 +66,7 @@ public class InvoiceTest {
         assertEquals(invoice.getCustomerEmail(), cusEmail);
         assertEquals(invoice.getCustomerID(), "ID: " + cusId);
         assertEquals(invoice.getIdentifier(), identifier);
-        assertEquals(invoice.getVatPercentage(), vat);
+        assertEquals(0, Float.compare(invoice.getVatPercentage(), vat));
     }
 
     @Test
@@ -73,11 +81,11 @@ public class InvoiceTest {
 
         for(int i = 0; i < 3; i++) {
             assertEquals(result.get(i).get("name"), productNames[i]);
-            assertEquals(result.get(i).get("price"), String.format("%.2f", productPrices[i]));
+            assertEquals(result.get(i).get("price"), plnFormat.format(productPrices[i]));
             assertEquals(result.get(i).get("amount"), Integer.toString(productAmounts[i]));
-            assertEquals(result.get(i).get("net"), String.format("%.2f", (1.0 - vat) * productAmounts[i] * productPrices[i]));
-            assertEquals(result.get(i).get("vat"), String.format("%.2f", vat * productAmounts[i] * productPrices[i]));
-            assertEquals(result.get(i).get("gross"), String.format("%.2f", productAmounts[i] * productPrices[i]));
+            assertEquals(result.get(i).get("net"), plnFormat.format((1.0 - vat) * productAmounts[i] * productPrices[i]));
+            assertEquals(result.get(i).get("vat"), plnFormat.format(vat * productAmounts[i] * productPrices[i]));
+            assertEquals(result.get(i).get("gross"), plnFormat.format(productAmounts[i] * productPrices[i]));
         }
     }
 

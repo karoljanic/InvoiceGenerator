@@ -1,4 +1,4 @@
-package org.example;
+package org.karoljanic.models;
 
 // Cel klasy: reprezentowanie danych klienta
 public class Customer extends Entity {
@@ -6,7 +6,7 @@ public class Customer extends Entity {
     private final String secondName;
     private final String id;
 
-    Customer(String firstName, String secondName, String id, String address, String zipCode, String email) {
+    public Customer(String firstName, String secondName, String id, String address, String zipCode, String email) {
         super(address, zipCode, email);
 
         this.firstName = firstName;
@@ -28,5 +28,9 @@ public class Customer extends Entity {
 
     public String getIdentifier() {
         return "ID: " + id;
+    }
+
+    public String getText() {
+        return getName() + '\n' + getIdentifier() + '\n' + getAddress() + '\n' + getZipCode() + '\n' + getEmail();
     }
 }

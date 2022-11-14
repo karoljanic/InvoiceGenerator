@@ -1,7 +1,8 @@
-package org.example;
+package org.karoljanic;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.karoljanic.models.Entity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
